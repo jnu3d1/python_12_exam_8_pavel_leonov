@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Каталог товаров{% endblock %}
+
+{% block content %}
+    <h1>Каталог товаров</h1>
+    <div>
+        {% include "partial/search_form.html" %}
+    </div>
+    <div>
+        {% if search %}
+            <p><a href="{% url "index" %}">На главную</a></p>
+        {% else %}
+            {% if perms.webapp.add_product %}
+                <p><a href="{% url "create" %}">Добавить новый товар</a></p>
+            {% endif %}
+        {% endif %}
+        {% for product in products %}
+            <h3><a href="{% url "product_view" product.pk %}">{{ product.name }}</a>, {{ product.get_category_display }}
+            </h3>
+        {% endfor %}
+        {% if is_paginated %}
+            {% include 'partial/pagination.html' %}
+        {% endif %}
+    </div>
+{% endblock %}
