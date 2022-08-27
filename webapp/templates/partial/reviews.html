@@ -1,0 +1,21 @@
+<h3>Отзывы на товар: "{{ product.name }}":</h3>
+{% if True %}
+    <p><a href="{% url "create_review" product.pk %}">Оставить отзыв</a></p>
+{% endif %}
+{% for review in reviews %}
+    {% if review.moderated %}
+        <p><b>{{ review.author }} ({{ review.author.email|default:"Электронная почта не указана" }})</b></p>
+        <p>{{ review.text }}</p>
+        <p>{{ review.get_rating_display }}</p>
+        <p>
+            <a href="{% url "edit_review" review.pk %}">Изменить отзыв</a>
+            <a href="{% url "delete_review" review.pk %}">Удалить отзыв</a>
+        </p>
+        <hr>
+    {% endif %}
+{% empty %}
+    <p>Нет отзывов</p>
+{% endfor %}
+{% if is_paginated %}
+    {% include 'partial/pagination.html' %}
+{% endif %}

@@ -13,11 +13,11 @@ categories = [
 ]
 
 stars = [
-    (1, '*'),
-    (2, '**'),
-    (3, '***'),
-    (4, '****'),
-    (5, '*****')
+    ('1', '*'),
+    ('2', '**'),
+    ('3', '***'),
+    ('4', '****'),
+    ('5', '*****')
 ]
 
 
@@ -26,6 +26,12 @@ class Product(models.Model):
     category = models.CharField(choices=categories, default='other', max_length=5, verbose_name='Категория товара')
     description = models.TextField(blank=True, max_length=2000, verbose_name='Описание товара')
     image = models.ImageField(blank=True, null=True, upload_to='images', verbose_name='Изображение товара')
+
+    def get_global_ratings(self):
+        ratings = 0
+        for i in self.reviews.all():
+            ratings += int(i.rating)
+        return '*' * int(ratings / self.reviews.all().count())
 
     def __str__(self):
         return f'{self.id} {self.name} {self.category}'

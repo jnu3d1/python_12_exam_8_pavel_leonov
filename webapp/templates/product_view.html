@@ -11,7 +11,7 @@
     {% endif %}
     <h3>Наименование товара:</h3>
     <p>
-        {{ product.name }}
+        {{ product.name }}, {% if product.reviews.all %}Рейтинг ({{ product.get_global_ratings }}){% else %}Рейтинг 0{% endif %}
     </p>
     <h3>Описание товара:</h3>
     <p>{{ product.description|default:"Нет описания" }}</p>
@@ -25,6 +25,7 @@
     {% if perms.webapp.delete_product %}
         <p><a href="{% url "delete" product.pk %}">Удалить</a></p>
     {% endif %}
+    {% include "partial/reviews.html" %}
     <p>
         <a style="color: red;" href="{% url "index" %}"><b>На главную</b></a>
     </p>
